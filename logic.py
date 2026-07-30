@@ -27,6 +27,7 @@ class Search:
 
     def set_fast_mode(self):
         self.op_mode = "fast"
+        
         try:
             for uni in self.uni_csv_paths.keys():
                 df = pd.read_csv(self.uni_csv_paths[uni]["path"], sep=";")
@@ -50,8 +51,10 @@ class Search:
 
         for uni in self.uni_csv_paths.keys():
             df = pd.read_csv(self.uni_csv_paths[uni]["path"], sep=";")
-            abiturient_line = df[df["Код поступающего"] == abiturient_id].iloc[0].to_dict()
-            abiturient_data[uni] = abiturient_line
+            abiturient_line = df[df["Код поступающего"] == abiturient_id]
+            if abiturient_line.empty:
+                continue
+            abiturient_data[uni] = abiturient_line.iloc[0].to_dict()
 
         return abiturient_data
 
@@ -61,8 +64,10 @@ class Search:
         
         for uni in self.uni_csv_paths.keys():
             df = self.uni_sheets[uni]
-            abiturient_line = df[df["Код поступающего"] == abiturient_id].iloc[0].to_dict()
-            abiturient_data[uni] = abiturient_line
+            abiturient_line = df[df["Код поступающего"] == abiturient_id]
+            if abiturient_line.empty:
+                continue
+            abiturient_data[uni] = abiturient_line.iloc[0].to_dict()
 
         return abiturient_data
             
