@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Приватный поиск позиций поступающего в загруженных конкурсных списках."
+    >
+    <title>Позиции в конкурсных списках</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="На главную">
+        <span class="brand-mark" aria-hidden="true">AR</span>
+        <span>Applicant Rank</span>
+      </a>
+      <div class="data-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>{{ source_count }} таблиц загружено</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Приёмная кампания 2026</p>
+        <h1 id="page-title">Узнайте свои позиции<br>в конкурсных списках</h1>
+        <p class="lead">
+          Введите свой код поступающего — мы проверим все локально загруженные
+          таблицы и соберём найденные позиции в одной сводке.
+        </p>
+
+        <form id="search-form" class="search-form" novalidate>
+          <label for="applicant-code">Код поступающего</label>
+          <div class="search-control">
+            <input
+              id="applicant-code"
+              name="applicant_code"
+              type="password"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              minlength="1"
+              maxlength="20"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              placeholder="Введите код"
+              required
+              aria-describedby="privacy-note"
+            >
+            <button type="button" id="toggle-code" class="toggle-code" aria-pressed="false">
+              Показать
+            </button>
+            <button type="submit" id="search-button" class="primary-button">
+              Найти позиции
+            </button>
+          </div>
+          <p id="privacy-note" class="privacy-note">
+            Код используется только для поиска, не возвращается в ответе сервера
+            и не отображается в результатах.
+          </p>
+        </form>
+
+        <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <section id="results" class="results" aria-labelledby="results-title" hidden>
+        <div class="results-heading">
+          <div>
+            <p class="eyebrow">Персональная сводка</p>
+            <h2 id="results-title">Найденные позиции</h2>
+          </div>
+          <p id="freshness" class="freshness"></p>
+        </div>
+
+        <div class="summary-grid" aria-label="Сводка результатов">
+          <article class="summary-card summary-card-accent">
+            <span class="summary-label">Всего совпадений</span>
+            <strong id="matches-value">0</strong>
+            <span>во всех загруженных таблицах</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Активных конкурсов</span>
+            <strong id="active-value">0</strong>
+            <span>со статусом участия</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Лучшая позиция</span>
+            <strong id="best-position-value">—</strong>
+            <span>официальная в списках</span>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Эффективная позиция</span>
+            <strong id="best-effective-value">—</strong>
+            <span>с учётом вероятных уходов</span>
+          </article>
+        </div>
+
+        <div class="details-heading">
+          <h2>Подробная информация</h2>
+          <p>
+            Для каждой таблицы показаны официальная позиция и каскад:
+            кто выше вас, скорее всего, уйдёт на бюджет или на более высокий приоритет.
+          </p>
+        </div>
+        <div id="entries" class="entries"></div>
+      </section>
+
+      <section class="about-data" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">О данных</p>
+          <h2 id="about-title">Только локальные источники</h2>
+        </div>
+        <div class="about-copy">
+          <p>
+            Сейчас поиск выполняется по {{ source_count }} CSV-таблицам из
+            каталога <code>data/</code>, содержащим {{ "{:,}".format(entry_count).replace(",", " ") }}
+            записей. Сайт не предоставляет общий просмотр таблиц.
+          </p>
+          <p>
+            Названия вузов в исходных файлах отсутствуют, поэтому в результатах
+            показываются только программа, тип конкурса, дата снимка и имя источника.
+            Каскад учитывает уходы на бюджет и на конкурсы с более высоким приоритетом;
+            для точной проверки квоты задайте число мест в <code>data/seats.json</code>
+            (см. <code>data/seats.example.json</code>).
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Applicant Ranking List Analyzer</span>
+      <span>Данные актуальны на момент соответствующего снимка</span>
+    </footer>
+  </body>
+</html>
