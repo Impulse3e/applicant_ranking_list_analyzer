@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from ingest.adapters.hse import HseAdapter
+from ingest.adapters.mipt import MiptAdapter
+from ingest.adapters.mirea import MireaAdapter
 from ingest.adapters.misis import MisisAdapter
 from ingest.adapters.mospoly import MospolyAdapter
 from ingest.adapters.mtuci import MtuciAdapter
 from ingest.adapters.stankin import StankinAdapter
-from ingest.adapters.stubs import MiptAdapter, MireaAdapter
 from ingest.base import BaseAdapter
 
 ADAPTERS: dict[str, type[BaseAdapter]] = {

@@ -105,6 +105,40 @@
             кто выше вас, скорее всего, уйдёт на бюджет или на более высокий приоритет.
           </p>
         </div>
+
+        <div class="filters" role="group" aria-label="Фильтры результатов">
+          <label class="filter-search" for="entry-search">
+            Поиск по вузу или программе
+            <input
+              id="entry-search"
+              type="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="например: МИРЭА, информатика, бюджет"
+            >
+          </label>
+
+          <div class="filter-chips" id="verdict-filters">
+            <button type="button" class="chip is-active" data-verdict="all" aria-pressed="true">
+              Все
+            </button>
+            <button type="button" class="chip" data-verdict="guaranteed" aria-pressed="false">
+              Гарантированно прохожу
+            </button>
+            <button type="button" class="chip" data-verdict="assumed" aria-pressed="false">
+              Прохожу по предположению
+            </button>
+            <button type="button" class="chip" data-verdict="no" aria-pressed="false">
+              Не прохожу ни при каких сценариях
+            </button>
+            <button type="button" class="chip" data-verdict="unknown" aria-pressed="false">
+              Квота неизвестна
+            </button>
+          </div>
+
+          <p id="filter-status" class="filter-status" role="status" aria-live="polite"></p>
+        </div>
+
         <div id="entries" class="entries"></div>
       </section>
 
@@ -120,10 +154,10 @@
             записей. Сайт не предоставляет общий просмотр таблиц.
           </p>
           <p>
-            Названия вузов в исходных файлах отсутствуют, поэтому в результатах
-            показываются только программа, тип конкурса, дата снимка и имя источника.
-            Каскад учитывает уходы на бюджет и на конкурсы с более высоким приоритетом;
-            для точной проверки квоты задайте число мест в <code>data/seats.json</code>
+            После поиска можно отфильтровать найденные таблицы по вузу или
+            программе и по вердикту прохода. Каскад учитывает уходы на бюджет
+            и на конкурсы с более высоким приоритетом; для точной проверки
+            квоты число мест берётся из <code>data/seats.json</code>
             (см. <code>data/seats.example.json</code>).
           </p>
         </div>

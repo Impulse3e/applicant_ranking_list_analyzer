@@ -41,14 +41,16 @@ class HseAdapter(BaseAdapter):
                         group_id = group.get("id")
                         if not place_id or not set_id or not group_id:
                             continue
+                        # Only "К" (с оплатой обучения) is paid; "Б", "ЦД", "Ц",
+                        # "Л", "В" are budget places within different quotas.
                         place_code = (place.get("code") or "").upper()
-                        is_budget = place_code in {"Б", "B", "BUDGET"} or "бюджет" in (
-                            place.get("name") or ""
-                        ).lower()
-                        if place_code in {"Д", "P", "П"} or "плат" in (
-                            place.get("name") or ""
-                        ).lower():
-                            is_budget = False
+                        place_name = (place.get("name") or "").lower()
+                        is_budget = not (
+                            place_code in {"К", "K", "Д", "П"}
+                            or "оплат" in place_name
+                            or "плат" in place_name
+                            or "договор" in place_name
+                        )
                         rows = self._fetch_applicants(
                             client,
                             competitive_group_id=group_id,
@@ -56,10 +58,15 @@ class HseAdapter(BaseAdapter):
                             place_type_id=place_id,
                         )
                         label = group.get("name") or program_name
+                        place_label = place.get("name") or ""
                         yielded += 1
                         yield FetchResult(
                             university=self.name,
-                            program=f"{label} [{filial_name}]",
+                            program=" ".join(
+                                part
+                                for part in (label, f"[{place_label}, {filial_name}]")
+                                if part
+                            ),
                             is_budget=is_budget,
                             rows=rows,
                             source_url=self.APPLICANT_URL,

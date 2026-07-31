@@ -261,6 +261,72 @@ def test_own_priority_marks_lower_priority_lists(tmp_path: Path):
     assert "Программа А" in program_b["own_priority"][0]["destination"]
 
 
+def test_pass_verdict_reflects_seats_and_cascade(tmp_path: Path):
+    write_list(
+        tmp_path,
+        "Гарантия.2026-07-30_20-00-00.csv",
+        "Подано согласие",
+        [
+            _row("2000000", "1", "1"),
+            _row("1000001", "2", "1", consent="Электронное"),
+        ],
+    )
+    write_list(
+        tmp_path,
+        "Каскад.2026-07-30_20-00-00.csv",
+        "Подано согласие",
+        [
+            _row("1000001", "1", "3"),
+            _row("2000000", "2", "2"),
+        ],
+    )
+    write_list(
+        tmp_path,
+        "Безнадёжно.2026-07-30_20-00-00.csv",
+        "Подано согласие",
+        [
+            _row("3000000", "1", "1"),
+            _row("2000000", "2", "1"),
+        ],
+    )
+    write_list(
+        tmp_path,
+        "Без_квоты.2026-07-30_20-00-00.csv",
+        "Подано согласие",
+        [_row("2000000", "5", "4")],
+    )
+    (tmp_path / "seats.json").write_text(
+        json.dumps(
+            {
+                "seats_by_file": {
+                    "Гарантия.2026-07-30_20-00-00.csv": 3,
+                    "Каскад.2026-07-30_20-00-00.csv": 1,
+                    "Безнадёжно.2026-07-30_20-00-00.csv": 1,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = RankingIndex.from_directory(tmp_path, SECRET).public_result("2000000")
+    verdicts = {
+        entry["source"]["program"]: entry["pass_verdict"]
+        for entry in result["entries"]
+    }
+
+    assert verdicts["Гарантия"] == "guaranteed"
+    assert verdicts["Каскад"] == "likely"
+    assert verdicts["Безнадёжно"] == "no"
+    assert verdicts["Без квоты"] == "unknown"
+    assert result["summary"]["verdicts"] == {
+        "guaranteed": 1,
+        "likely": 1,
+        "possible": 0,
+        "no": 1,
+        "unknown": 1,
+    }
+
+
 def test_possible_leavers_when_seats_unknown(tmp_path: Path):
     write_list(
         tmp_path,

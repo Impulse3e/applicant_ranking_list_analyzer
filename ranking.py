@@ -479,6 +479,29 @@ class RankingIndex:
             "notes": notes,
         }
 
+    @staticmethod
+    def pass_verdict(entry: RankingEntry, cascade: dict[str, object]) -> str:
+        """Classify the chance to be admitted on this list.
+
+        guaranteed — official position already fits the quota;
+        likely / possible — fits only after likely / possible departures above;
+        no — stays outside the quota even in the most optimistic scenario;
+        unknown — seats or position are missing, or the row is not active.
+        """
+        if not _is_active(entry) or entry.position is None:
+            return "unknown"
+        if cascade.get("seats") is None:
+            return "unknown"
+        if cascade.get("within_seats_official") is True:
+            return "guaranteed"
+        if cascade.get("within_seats_likely") is True:
+            return "likely"
+        if cascade.get("within_seats_possible") is True:
+            return "possible"
+        if cascade.get("within_seats_possible") is False:
+            return "no"
+        return "unknown"
+
     def analyze_own_priorities(
         self, digest: bytes, entries: list[RankingEntry]
     ) -> list[dict[str, object]]:
@@ -553,6 +576,14 @@ class RankingIndex:
             for item in self.analyze_own_priorities(digest, entries)
         }
 
+        verdict_counts = {
+            "guaranteed": 0,
+            "likely": 0,
+            "possible": 0,
+            "no": 0,
+            "unknown": 0,
+        }
+
         for entry in entries:
             cascade = self.analyze_cascade(digest, entry)
             total_likely_leavers += int(cascade["likely_leavers"])
@@ -564,6 +595,9 @@ class RankingIndex:
             payload = entry.to_public_dict()
             payload["cascade"] = cascade
             payload["own_priority"] = own_priority.get(entry.source.file_name, [])
+            verdict = self.pass_verdict(entry, cascade)
+            payload["pass_verdict"] = verdict
+            verdict_counts[verdict] += 1
             public_entries.append(payload)
 
         return {
@@ -578,6 +612,7 @@ class RankingIndex:
                 "likely_leavers_total": total_likely_leavers,
                 "possible_leavers_total": total_possible_leavers,
                 "latest_snapshot": latest_snapshot,
+                "verdicts": verdict_counts,
             },
             "entries": public_entries,
         }

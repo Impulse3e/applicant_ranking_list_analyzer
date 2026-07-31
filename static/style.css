@@ -330,6 +330,88 @@ h2 {
   text-align: right;
 }
 
+.filters {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.filter-search {
+  display: grid;
+  gap: 8px;
+  max-width: 520px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.filter-search input {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 500;
+}
+
+.filter-search input:focus-visible {
+  border-color: var(--accent-strong);
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 1px;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  min-height: 38px;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--accent-strong);
+  color: var(--ink);
+}
+
+.chip.is-active {
+  border-color: var(--dark);
+  background: var(--dark);
+  color: var(--accent);
+}
+
+.filter-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.badge.pass {
+  background: var(--accent);
+  color: #53602a;
+}
+
+.empty-state {
+  margin: 0;
+  padding: 28px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  color: var(--muted);
+  text-align: center;
+}
+
 .entries {
   display: grid;
   gap: 14px;

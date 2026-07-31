@@ -1,0 +1,64 @@
+WARN monitoring: outbound 🇹🇹 Тринидад и Тобаго § 266 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇲🇴 Макао § 207 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+ERROR router: fetch rule-set geoip-ru: Get "https://raw.githubusercontent.com/hiddify/hiddify-geo/rule-set/country/geoip-ru.srs": read tcp 192.168.43.127:35864->78.159.245.15:8443: use of closed network connection
+WARN monitoring: outbound 🇧🇳 Бруней § 149 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇰🇲 Коморы § 193 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇲🇪 Черногория § 280 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇪🇹 Эфиопия § 287 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇬🇹 Гватемала § 158 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 0 to get IP info: https://myip.expert/api/ non-200 response from [https://myip.expert/api/]: 404
+WARN monitoring: outbound 🇩🇿 Алжир § 128 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇧🇼 Ботсвана § 146 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: Failed try 0 to get IP info: https://ipapi.co/json/ non-200 response from [https://ipapi.co/json/]: 429
+WARN monitoring: Failed try 0 to get IP info: https://myip.expert/api/ non-200 response from [https://myip.expert/api/]: 404
+WARN monitoring: Failed try 1 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: Failed try 0 to get IP info: https://ipapi.co/json/ non-200 response from [https://ipapi.co/json/]: 429
+WARN monitoring: outbound 🇷🇺 ⚡ Россия, Екатеринбург § 28 URL test failed: dial tcp 80.87.102.108:8443: i/o timeout
+WARN monitoring: outbound 🇻🇳 Вьетнам § 155 URL test failed: dial tcp 160.191.164.164:8443: i/o timeout
+WARN monitoring: Failed try 1 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: outbound 🇱🇧 Ливан § 201 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇸🇳 Сенегал § 246 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇾🇪 Йемен § 179 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+ERROR router: fetch rule-set geoip-ru: read tcp 192.168.43.127:40538->185.40.28.219:8443: use of closed network connection
+WARN monitoring: outbound 🇹🇲 Туркменистан § 268 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇵🇬 Папуа - Новая Гвинея § 235 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 0 to get IP info: https://api.ip.sb/geoip/ Get "https://api.ip.sb/geoip/": context deadline exceeded
+WARN monitoring: outbound 🇲🇦 Марокко § 212 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 0 to get IP info: https://myip.expert/api/ non-200 response from [https://myip.expert/api/]: 404
+WARN monitoring: outbound 🇻🇮 Виргинские острова (Британия) § 154 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 1 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: outbound 🇦🇴 Ангола § 129 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: Failed try 0 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: outbound 🇸🇩 Судан § 254 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 0 to get IP info: https://ipapi.co/json/ Get "https://ipapi.co/json/": local error: tls: bad record MAC
+WARN monitoring: Failed try 0 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: Failed try 0 to get IP info: https://reallyfreegeoip.org/json/ non-200 response from [https://reallyfreegeoip.org/json/]: 403
+ERROR [1369535831 683ms] connection: connection download handshake: write payload: write tcp 127.0.0.1:18080->127.0.0.1:50830: use of closed network connection
+WARN monitoring: outbound 🇲🇲 Мьянма § 219 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: Failed try 0 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: outbound 🇭🇳 Гондурас § 159 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇳🇿 Новая Зеландия § 225 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 0 to get IP info: https://myip.expert/api/ non-200 response from [https://myip.expert/api/]: 404
+WARN monitoring: outbound 🇯🇪 Джерси § 168 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇪🇪 🎮 ⭐️ Эстония (Мост МСК) § 39 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇸🇪 🎮 ⚡️ 0.5X - LTE №87 - Швеция § 78 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇸🇾 Сирия § 250 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 1 to get IP info: https://free.freeipapi.com/api/json/ Get "https://free.freeipapi.com/api/json/": context deadline exceeded
+WARN monitoring: outbound 🇧🇷 Бразилия § 147 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇳🇱 SNI 1 § 118 URL test failed: dial tcp 89.105.205.116:8443: connect: connection refused
+WARN monitoring: Failed try 0 to get IP info: https://reallyfreegeoip.org/json/ non-200 response from [https://reallyfreegeoip.org/json/]: 403
+WARN monitoring: outbound 🇨🇬 Конго § 194 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context deadline exceeded
+WARN monitoring: outbound 🇮🇷 Иран § 176 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇸🇷 Суринам § 255 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇱🇻 🎮 ⚡️ LTE Авто - Латвия § 4 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: outbound 🇧🇿 Белиз § 141 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": EOF
+WARN monitoring: Failed try 1 to get IP info: https://api.my-ip.io/v2/ip.json Get "https://api.my-ip.io/v2/ip.json": context deadline exceeded
+WARN monitoring: outbound 🇳🇱 SS 1 § 119 URL test failed: dial tcp 89.105.205.116:2030: connect: connection refused
+WARN monitoring: outbound 🇵🇰 Пакистан #3 § 232 URL test failed: context canceled
+WARN monitoring: outbound 🇩🇪 🎮 ⚡️ LTE - Безлимитный #21 § 51 URL test failed: context canceled: connection error: desc = "transport: authentication handshake failed: tls: failed to verify certificate: x509: certificate signed by unknown authority"
+WARN monitoring: outbound 🇲🇷 Мавритания § 206 URL test failed: context canceled
+WARN monitoring: outbound 🇷🇺 🎮 ⚡️ Россия, Москва | Hysteria2 § 25 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context canceled
+WARN monitoring: outbound 🇨🇴 Колумбия § 192 URL test failed: Head "http://captive.apple.com/hotspot-detect.html": context canceled
+WARN monitoring: Failed try 0 to get IP info: https://reallyfreegeoip.org/json/ Get "https://reallyfreegeoip.org/json/": context canceled
+WARN monitoring: Failed try 0 to get IP info: https://ipapi.co/json/ Get "https://ipapi.co/json/": context canceled
+WARN monitoring: Failed try 0 to get IP info: https://reallyfreegeoip.org/json/ Get "https://reallyfreegeoip.org/json/": context canceled

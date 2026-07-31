@@ -10,6 +10,37 @@ const activeValue = document.querySelector("#active-value");
 const bestPositionValue = document.querySelector("#best-position-value");
 const bestEffectiveValue = document.querySelector("#best-effective-value");
 const freshness = document.querySelector("#freshness");
+const entrySearch = document.querySelector("#entry-search");
+const verdictFilters = document.querySelector("#verdict-filters");
+const filterStatus = document.querySelector("#filter-status");
+
+const VERDICT_LABELS = {
+  guaranteed: "Гарантированно прохожу",
+  likely: "Прохожу по предположению",
+  possible: "Прохожу по предположению",
+  no: "Не прохожу ни при каких сценариях",
+  unknown: "Квота неизвестна",
+};
+
+const VERDICT_BADGE_CLASS = {
+  guaranteed: "badge pass",
+  likely: "badge active",
+  possible: "badge active",
+  no: "badge warn",
+  unknown: "badge",
+};
+
+// Chip value -> verdicts it accepts.
+const VERDICT_GROUPS = {
+  all: null,
+  guaranteed: ["guaranteed"],
+  assumed: ["likely", "possible"],
+  no: ["no"],
+  unknown: ["unknown"],
+};
+
+let loadedEntries = [];
+let activeVerdict = "all";
 
 const text = (tagName, value, className) => {
   const element = document.createElement(tagName);
@@ -85,6 +116,11 @@ const renderCascade = (cascade) => {
   addFact(facts, "Мест в квоте", cascade.seats ?? "не задано");
   addFact(facts, "В квоте официально", seatLabel(cascade.within_seats_official));
   addFact(facts, "В квоте после каскада", seatLabel(cascade.within_seats_likely));
+  addFact(
+    facts,
+    "В квоте при «возможно»",
+    seatLabel(cascade.within_seats_possible),
+  );
   block.append(facts);
 
   if (cascade.reasons?.length) {
@@ -148,11 +184,10 @@ const renderEntry = (entry) => {
       entry.status === "Участвуете в конкурсе" ? "badge active" : "badge",
     ),
   );
-  if (entry.cascade?.within_seats_likely === true) {
-    metadata.append(text("span", "Проход после каскада", "badge active"));
-  } else if (entry.cascade?.within_seats_official === false) {
-    metadata.append(text("span", "Вне квоты официально", "badge warn"));
-  }
+  const verdict = entry.pass_verdict ?? "unknown";
+  metadata.append(
+    text("span", VERDICT_LABELS[verdict], VERDICT_BADGE_CLASS[verdict]),
+  );
   identity.append(metadata);
   identity.append(
     text(
@@ -188,6 +223,47 @@ const renderEntry = (entry) => {
   return card;
 };
 
+const matchesQuery = (entry, query) => {
+  if (!query) {
+    return true;
+  }
+  const haystack = [
+    entry.source.program,
+    entry.source.list_type,
+    entry.source.file_name,
+  ]
+    .join(" ")
+    .toLowerCase();
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((token) => haystack.includes(token));
+};
+
+const applyFilters = () => {
+  const query = entrySearch.value.trim();
+  const allowed = VERDICT_GROUPS[activeVerdict];
+  const visible = loadedEntries.filter(
+    (entry) =>
+      matchesQuery(entry, query) &&
+      (allowed === null || allowed.includes(entry.pass_verdict ?? "unknown")),
+  );
+
+  entriesContainer.replaceChildren(...visible.map(renderEntry));
+  filterStatus.textContent = `Показано ${visible.length} из ${loadedEntries.length} таблиц.`;
+
+  if (!visible.length && loadedEntries.length) {
+    entriesContainer.append(
+      text(
+        "p",
+        "Под выбранные фильтры ничего не подошло. Смягчите условия или очистите поиск.",
+        "empty-state",
+      ),
+    );
+  }
+};
+
 const renderResults = (data) => {
   matchesValue.textContent = data.summary.matches;
   activeValue.textContent = data.summary.active;
@@ -197,10 +273,27 @@ const renderResults = (data) => {
     data.summary.latest_snapshot,
   )}`;
 
-  entriesContainer.replaceChildren(...data.entries.map(renderEntry));
+  loadedEntries = data.entries;
+  applyFilters();
   results.hidden = false;
   results.scrollIntoView({ behavior: "smooth", block: "start" });
 };
+
+entrySearch.addEventListener("input", applyFilters);
+
+verdictFilters.addEventListener("click", (event) => {
+  const chip = event.target.closest(".chip");
+  if (!chip) {
+    return;
+  }
+  activeVerdict = chip.dataset.verdict;
+  for (const button of verdictFilters.querySelectorAll(".chip")) {
+    const isActive = button === chip;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  }
+  applyFilters();
+});
 
 toggleCodeButton.addEventListener("click", () => {
   const isVisible = codeInput.type === "text";

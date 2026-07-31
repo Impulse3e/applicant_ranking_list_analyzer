@@ -47,7 +47,26 @@
 - кто уже подал согласие или заключил договор в другом конкурсе;
 - как меняется эффективная позиция и попадание в квоту.
 
-Число мест задается в `data/seats.json`. Без него уходы без явного подтверждения помечаются как «возможно». Пример конфигурации: `data/seats.example.json`.
+Число мест задается в `data/seats.json`. Адаптеры, у которых источник отдает план приема (сейчас МИРЭА и МФТИ), пишут его туда сами во время сбора; для остальных вузов значения задаются вручную или подтягиваются с официальных страниц:
+
+```bash
+python -m ingest.seats_web          # дописать недостающие
+python -m ingest.seats_web --replace  # перезаписать по ВШЭ/МТУСИ/МИСИС/СТАНКИН/МПУ
+```
+
+Источники: [ВШЭ kolmest](https://ba.hse.ru/kolmest), [МТУСИ bachelor](https://abitur.mtuci.ru/bachelor/), [МИСИС план приема](https://misis.ru/applicants/admission/progress/baccalaureate-and-specialties/kolichestvopostupayush_ihipodan/), [СТАНКИН](https://priem.stankin.ru/bakalavriatispetsialitet/training_programs/), [МПУ приложение 2.4](https://mospolytech.ru/postupayushchim/priem-v-universitet/pravila-priema/). Пример ручной конфигурации: `data/seats.example.json`.
+
+По каждой позиции API возвращает вердикт `pass_verdict`:
+
+| Значение | Смысл |
+|----------|-------|
+| `guaranteed` | официальная позиция уже внутри квоты |
+| `likely` | попадаете после вероятных уходов выше |
+| `possible` | попадаете, только если уйдут и «возможные» конкуренты |
+| `no` | вне квоты даже в самом оптимистичном сценарии |
+| `unknown` | нет числа мест, позиции или строка неактивна |
+
+В интерфейсе поверх найденных таблиц работают клиентские фильтры: текстовый поиск по вузу, программе и типу конкурса плюс переключатели «Гарантированно прохожу», «Прохожу по предположению», «Не прохожу ни при каких сценариях» и «Квота неизвестна». Фильтры не отправляют новых запросов на сервер и не видят код поступающего.
 
 CSV в `data/` появляются после запуска `python -m ingest` (или кладутся вручную). Общий просмотр и скачивание таблиц через сайт отсутствуют.
 
@@ -59,8 +78,11 @@ pip install -e ".[dev]"
 python -m ingest --max-lists 1
 # конкретный вуз
 python -m ingest -u misis -u mtuci -u stankin
-# полный проход по доступным (кроме заглушек МФТИ/МИРЭА)
+# полный проход по доступным (МФТИ/МИРЭА — явно через -u)
 python -m ingest --delay 0.35
+# МФТИ / МИРЭА
+python -m ingest -u mipt
+python -m ingest -u mirea --proxy http://127.0.0.1:12334
 ```
 
 | Код | Вуз | Статус |
@@ -70,8 +92,8 @@ python -m ingest --delay 0.35
 | `stankin` | СТАНКИН | работает (grid iframe) |
 | `hse` | ВШЭ | работает (JSON API, Москва) |
 | `mospoly` | МПУ | работает (POST; TLS часто с `--insecure`, включается автоматически) |
-| `mipt` | МФТИ | заглушка: Vue/Bitrix `getList` ещё не разобран |
-| `mirea` | МИРЭА | заглушка: DDoS-Guard / недоступность из части сетей |
+| `mipt` | МФТИ | работает (`_getNameListHtml`); сейчас публичные tbody часто пустые |
+| `mirea` | МИРЭА | работает (`/competitions_api`); нужен RU egress **без** bypass `.ru` (в Hiddify Region ≠ Russia + `--proxy`) |
 
 Источники: [МФТИ](https://pk.mipt.ru/bachelor/competition-list/), [МИРЭА](https://priem.mirea.ru/accepted-entrants-list/), [МТУСИ](https://abitur.mtuci.ru/ranked_lists/), [ВШЭ](https://pk.hse.ru/admissions/bak/KS?t=20260727), [СТАНКИН](https://priem.stankin.ru/bakalavriatispetsialitet/ranked-lists/), [МПУ](https://mospolytech.ru/postupayushchim/priem-v-universitet/rating-abiturientov/), [МИСИС](https://misis.ru/applicants/admission/progress/baccalaureate-and-specialties/list-of-applicants/).
 
@@ -80,7 +102,7 @@ python -m ingest --delay 0.35
 - нет планировщика и фонового обновления снимков;
 - индекс строится в памяти одного процесса при запуске;
 - обновление CSV требует перезапуска приложения;
-- адаптеры МФТИ и МИРЭА ещё не выгружают данные;
+- МИРЭА блокируется DDoS-Guard при Direct-доступе к `.ru` с зарубежного IP;
 - имя файла не содержит полного набора метаданных конкурсной группы;
 - rate limit хранится в памяти и не синхронизируется между несколькими workers;
 - нет базы данных, CI/CD и промышленного мониторинга;
