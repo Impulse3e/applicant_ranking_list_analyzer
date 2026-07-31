@@ -87,6 +87,17 @@ def _parse_int(value: str | None) -> int | None:
 
 
 def _display_program(raw_name: str) -> str:
+    parts = [part for part in raw_name.split("__") if part]
+    if len(parts) >= 2:
+        # university__program[__list_type]
+        university = parts[0].replace("_", " ").strip()
+        program = parts[1].replace("_", " ").strip()
+        list_hint = parts[2].replace("_", " ").strip() if len(parts) >= 3 else ""
+        if list_hint in {"бюджет", "платное"}:
+            return f"{university} — {program}"
+        if list_hint:
+            return f"{university} — {program} — {list_hint}"
+        return f"{university} — {program}"
     return raw_name.replace("__", " — ").replace("_", " ").strip()
 
 
@@ -165,9 +176,9 @@ class RankingIndex:
         index = cls(secret=secret, campaign=campaign)
         paths = sorted(data_directory.glob("*.csv"))
         if not paths:
-            raise DataSourceError(
-                f"В каталоге {data_directory} не найдено ни одного CSV-файла."
-            )
+            # Empty catalog is allowed so the app can start before the first ingest.
+            index._load_seats(seats_path or (data_directory / "seats.json"))
+            return index
 
         for path in paths:
             index._load_file(path)
